@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  desafio-globo:
+    build: .
+    container_name: desafio-globo-java
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:8.0.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
