@@ -34,6 +34,7 @@ public class CacheConfig {
     public CommandLineRunner redisHelthCheck(StringRedisTemplate redisTemplate) {
         return args -> {
             Logger logger = LoggerFactory.getLogger("RedisHelthCheck");
+            logger.info(System.getenv().toString());
             try {
                 redisTemplate.opsForValue().set("redis:ping", "pong");
                 String value = redisTemplate.opsForValue().get("redis:ping");

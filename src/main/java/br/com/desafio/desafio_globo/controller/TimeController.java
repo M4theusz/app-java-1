@@ -2,6 +2,7 @@ package br.com.desafio.desafio_globo.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,11 @@ public class TimeController {
 	
     @GetMapping("/hora")
     @Cacheable("horaAtual")
-    public String horaAtual() {
+    public Map<String, String> horaAtual() {
     	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     	logger.info("Esse endpint possui cache configurado de 10 segundos.");
-        return LocalDateTime.now().format(format);
+    	Map<String, String>  horaMap = Map.of("horaServidor", LocalDateTime.now().format(format));
+        return horaMap;
     }
     
     @GetMapping("/mensagem")
