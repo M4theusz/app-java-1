@@ -21,6 +21,7 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager(LettuceConnectionFactory redisConnectionFactory) {
     	
+
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofSeconds(10))
                 .disableCachingNullValues();                
