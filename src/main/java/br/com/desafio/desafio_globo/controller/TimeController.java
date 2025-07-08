@@ -10,17 +10,30 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @RestController
 public class TimeController {
 	
 	Logger logger = LoggerFactory.getLogger(TimeController.class);
 	
+	private final Counter counterHoraAtual;
+	
+	public TimeController (MeterRegistry registry) {
+		counterHoraAtual = registry.counter("time.controller.counter");
+	}
+	
     @GetMapping("/hora")
     @Cacheable("horaAtual")
     public Map<String, String> horaAtual() {
-    	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     	logger.info("Esse endpint possui cache configurado de 10 segundos.");
+
+    	DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     	Map<String, String>  horaMap = Map.of("horaServidor", LocalDateTime.now().format(format));
+    	
+    	counterHoraAtual.increment();
+    	
         return horaMap;
     }
     
